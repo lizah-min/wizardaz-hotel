@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wizardz | Home</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      font-family:var();
+      scroll-behavior: smooth;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+    }
+    .slideshow {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      overflow: hidden;
+      margin-top: 0;
+      margin-bottom: 0;
+      z-index: 1;
+    }
+    .slideshow-content img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 1s ease-in-out;
+    }
+
+    .slideshow img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      opacity: 0;
+      z-index: 1;
+      transition: opacity 1.5s ease-in-out;
+    }
+
+    .slideshow img.active {
+      opacity: 1;
+      z-index: 0;
+    }
+    .slide-text {
+  position: relative;
+  z-index: 1;
+  padding-top: 35vh;
+  text-align: center;
+  color: white;
+}
+
+.welcome-text {
+  background-color: rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+}
+
+    .navbar {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding:1rem;
+      z-index: 20;
+      animation: fadeIn 1s ease-in;
+    }
+
+    .navbar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 1600px;
+      padding: 0 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 12px;
+    }
+
+    .nav-links li {
+      position: relative;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    .nav-links li:nth-child(1) { animation-delay: 0.2s; }
+    .nav-links li:nth-child(2) { animation-delay: 0.4s; }
+    .nav-links li:nth-child(3) { animation-delay: 0.6s; }
+    .nav-links li:nth-child(4) { animation-delay: 0.8s; }
+    .nav-links li:nth-child(5) { animation-delay: 1s; }
+
+    .nav-links li > a {
+      color: white;
+      text-decoration: none;
+      padding: 6px 10px;
+      font-size: 15px;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links li:hover > a {
+      color: #ffd700;
+    }
+
+    .left-links, .right-links {
+      display: flex;
+    }
+
+    .branding {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 10px;
+    }
+
+    .branding img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      animation: popIn 1s ease-out forwards;
+    }
+
+    .branding span {
+      font-size: 30px;
+      font-weight: bold;
+      color: #ffd700;
+      animation: popIn 1.5s ease-out forwards;
+    }
+
+    .dropdown-content {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 120%;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  min-width: 180px;
+  z-index: 25;
+  flex-direction: column;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+.dropdown:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+    .dropdown-content li {
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #333;
+      color: #ffd700;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: flex;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      font-size: 30px;
+      color:yellow;
+      cursor: pointer;
+      z-index: 10;
+      user-select: none;
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 10px;
+      border-radius: 50%;
+      transform: translateY(-50%);
+    }
+
+    .arrow-left {
+      left: 20px;
+    }
+
+    .arrow-right {
+      right: 20px;
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @media screen and (max-width: 1024px) {
+      .navbar-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .left-links, .right-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links {
+        gap: 10px;
+      }
+
+      .branding span {
+        font-size: 24px;
+      }
+    }
+    .welcome-text {
+  position: absolute; 
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  text-align: center;
+  margin: 0 auto;
+  z-index: 2;
+  color: #ffd700;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.7);
+  user-select: none;
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeInWelcome 2.5s ease forwards;
+  animation-delay: 1s;
+}
+
+.welcome-text h1 {
+  font-size: 5rem;
+  letter-spacing: 0.3em;
+  margin-bottom: 0.2em;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-family: 'Arial Black', Arial, sans-serif;
+}
+
+.welcome-text h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.welcome-text p {
+  font-size: 1.5rem;
+  font-style: italic;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  .welcome-text h1 {
+    font-size: 3rem;
+    letter-spacing: 0.15em;
+  }
+  .welcome-text h2 {
+    font-size: 1.3rem;
+  }
+  .welcome-text p {
+    font-size: 1rem;
+  }
+}
+@keyframes fadeInWelcome {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+.dropdown > a::after {
+  content: " ▼";
+  font-size: 0.6em;
+  margin-left: 4px;
+  transition: transform 0.3s ease;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.dropdown:hover > a::after {
+  transform: rotate(180deg);
+}
+.home-section {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.main {
+  min-height: calc(100vh - 250px);
+  padding-bottom: 50px;
+  flex: 1;
+}
+.slideshow-container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero {
+  text-align: center;
+  padding: 150px 20px;
+  color: yellow;
+}
+
+  
+  .two-column-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px 10%;
+  background: #fefefe;
+  gap: 40px;
+  flex-wrap: wrap;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.text-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.text-column h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #5e0e0e;
+}
+
+.text-column p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.image-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+.image-column img {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+.accommodation-section {
+  padding: 60px 5%;
+  background: #f8f8f8;
+  text-align: center;
+}
+
+.accommodation-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: #5e0e0e;
+}
+
+  .room-gallery {
+      display: flex;
+      justify-content: center;
+      gap:55px;
+      flex-wrap: wrap;
+    }
+
+    .room-card {
+      flex: 1 1 30%;
+      max-width: 300px;
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+
+    .room-card:nth-child(1),
+    .room-card:nth-child(3) {
+      transform: translateY(0);
+    }
+
+    .room-card:nth-child(2) {
+      transform: translateY(40px);
+    }
+
+    .room-card img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .room-card h3 {
+      margin-top: 15px;
+      font-size: 1.2rem;
+    }
+
+    .room-card:hover {
+      transform: scale(1.05) translateY(-5px);
+    }
+.room-card:hover {
+  transform: scale(1.03);
+}
+.explore-text {
+  opacity: 0;
+  font-weight: bold;
+  color: #800000;
+  margin-top: 8px;
+  font-size: 1.1rem;
+  transition: opacity 0.3s ease;
+  user-select: none;
+  visibility: visible;
+}
+
+.room-card:hover .explore-text {
+  opacity: 1;
+}
+
+
+
+.experience-section {
+  padding: 60px 20px;
+  background: #fdf8f0;
+  margin-top: 0;
+}
+
+.experience-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.experience-content h2 {
+  font-size: 2.2em;
+  margin-bottom: 15px;
+  color: #800000;
+}
+
+.experience-content p {
+  font-size: 1.1em;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 30px;
+  max-width: 700px;
+}
+
+.experience-images {
+      width: 100vw;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slide-container {
+      position: relative;
+      width: 100%;
+      height: 500px;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      z-index: 0;
+    }
+
+    .slide.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 32px;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      cursor: pointer;
+      z-index: 2;
+      border-radius: 50%;
+    }
+
+    .arrow.left {
+      left: 20px;
+    }
+
+    .arrow.right {
+      right: 20px;
+    }
+
+    .arrow:hover {
+      background: rgba(0,0,0,0.6);
+    }
+    .slide-container:hover .slide.active {
+  transform: scale(1.03);
+  transition: transform 0.5s ease; opacity: o.5;
+}
+
+.fun-activities-section {
+  background-image: url('https://cdn.pixabay.com/photo/2017/08/06/22/12/hiking-2593706_1280.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 80px 20px;
+  color:yellow;
+  text-align: center;
+  position: relative;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fun-activities-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.fun-activities-section .content {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+}
+
+.fun-activities-section h2 {
+  font-size: 3em;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 6px #000;
+}
+
+.fun-activities-section p {
+  font-size: 1.25em;
+  text-shadow: 1px 1px 4px #000;
+}
+ .meetings-events {
+  background-color: #f9f9f9;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.meetings-events h2 {
+  font-size: 2.5rem;
+  color: #800000;
+  margin-bottom: 40px;
+}
+
+.meetings-events-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: left;
+  flex-wrap: nowrap;
+}
+
+.event-text {
+  flex: 1;
+  max-width: 50%;
+}
+
+.event-text p {
+  font-size: 1.1rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.event-image-container {
+  flex: 1;
+  max-width: 50%;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.event-image {
+  width: 100%;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.event-image-container:hover .event-image {
+  transform: scale(1.05);
+  filter: brightness(110%);
+}
+
+@media (max-width: 768px) {
+  .meetings-events-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .event-text, .event-image-container {
+    max-width: 100%;
+  }
+}
+
+
+
+  </style>
+</head>
+<body>
+ <header>
+  <div class="slideshow" id="slideshow">
+  <div class="slideshow-content">
+    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1600&q=80" class="active">
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=80">
+    <img src="https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=1600&q=80">
+  </div>
+  </div>
+  <div class="navbar">
+    <div class="navbar-content">
+      <ul class="nav-links left-links">
+        <li><a href="index.html"><i class="fas fa-home"></i> HOME</a></li>
+        <li class="dropdown"><a href="room.html">ROOMS</a></li>
+        <li class="dropdown"><a href="restaurant.html">RESTAURANTS</a></li>
+        <li class="dropdown"><a href="#">CLUB & LOUNGE</a></li>
+      </ul>
+
+      <div class="branding">
+        <img src="https://cdn-icons-png.flaticon.com/512/1046/1046784.png" alt="Wizardz Logo">
+        <span>WIZARDZ</span>
+      </div>
+
+      <ul class="nav-links right-links">
+        <li class="dropdown"><a href="#">SPA & WELLNESS</a></li>
+        <li class="dropdown"><a href="#">OFFERS</a></li>
+        <li class="dropdown">
+          <a href="#">MEDIA</a>
+          <ul class="dropdown-content">
+            <li><a href="#">Gallery</a></li>
+            <li><a href="#">Videos</a></li>
+          </ul>
+        </li>
+        <li class="dropdown"><a href="#">CONTACT</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="welcome-text">
+    <h1>WELCOME</h1>
+    <h2>WIZARDZ CLUB & LOUNGE & RESTAURANT & SPA</h2>
+    <p>Relaxation is a habit.</p>
+  </div>
+  <div class="arrow arrow-left" onclick="prevSlide()">&#10094;</div>
+  <div class="arrow arrow-right" onclick="nextSlide()">&#10095;</div>
+</div>
+
+        <section class="page-section two-column-section">
+          <div class="text-column">
+               <h2>WIZARDZ CLUB & LOUNGE & RESTAURANT $ SPA </h2>
+            <p>
+               Welcome to Wizardz club & lounge & Restaurant & spa where we offer services that are beyond your wildest imaginations.We have good food cuisens varierty
+               wide range of drinks, enterntainment & our state of art spa with capable staff and so much more.
+               We have several branches >Meru, Machakos, Coast and Eldoret & Nairobi and Nakuru.
+               Visit us to discover more.  
+            </p>
+          </div>
+            <div class="image-column">
+              <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?auto=format&fit=crop&w=800&q=80" alt="Elegant Dining">
+            </div>
+        </section>
+      <section class="accommodation-section">
+  <h2>ACCOMMODATION OPTIONS</h2>
+  <p style="max-width: 800px; margin: 20px auto; font-size: 1.1rem; line-height: 1.6; color: #444;">
+    At Wizardz, we offer a variety of accommodation options to suit your needs — from cozy single rooms to luxurious suites. Each room is designed with comfort, elegance, and modern amenities to ensure a relaxing stay. Explore our options below.
+  </p>
+      <div class="room-gallery">
+      <div class="room-card">
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80" alt="Superior Room">
+          <div class="explore-text">EXPLORE</div>
+        <h3>SUPERIOR ROOM</h3>
+      </div>
+      <div class="room-card">
+        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80" alt="Executive Suite">
+        <div class="explore-text">EXPLORE</div>
+        <h3>DELUXE ROOM</h3>
+      </div>
+      <div class="room-card">
+        <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80" alt="Executive Suite">
+        <div class="explore-text">EXPLORE</div>
+        <h3>STANDARD ROOM</h3>
+      </div>
+    </div>
+</section>
+<section class="experience-section">
+  <div class="experience-content">
+    <h2>EXPERIENCE WITH US</h2>
+    <p>
+      Indulge in a variety of carefully selected drinks and gourmet delicacies.
+      From rich local brews to mouth-watering international cuisine, we bring 
+      you a full sensory experience. Relax, sip, and savor every moment with us.
+    </p>
+    <div class="experience-images">
+    <div class="slide-container">
+      <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=1600&q=80" class="slide active" alt="Slide 1" />
+      <img src="https://images.unsplash.com/photo-1522770179533-24471fcdba45?auto=format&fit=crop&w=1600&q=80" class="slide" alt="Slide 2" />
+      <img src=" https://cdn.pixabay.com/photo/2015/04/08/13/13/food-712665_960_720.jpg"class="slide" alt="Slide 3" />
+
+      <button class="arrow left">&#10094;</button>
+      <button class="arrow right">&#10095;</button>
+    </div>
+  </div>
+</section>
+            
+          
+   <section class="meetings-events">
+  <h2>MEETING & EVENTS</h2>
+
+  <div class="meetings-events-content">
+    <div class="event-text">
+      <p>Whether you're planning a high-level corporate meeting, an intimate private event, or a grand celebration, 
+      <strong>Wizardz Hotel & Lounge</strong> offers the perfect setting. Our versatile event spaces are designed 
+      with style and functionality in mind, equipped with modern amenities and supported by a dedicated events team. 
+      Let us turn your vision into reality with unmatched service and a touch of elegance that only Wizardz can offer.</p>
+    </div>
+    
+    <div class="event-image-container">
+      <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=900&q=80" alt="Meetings and Events" class="event-image" />
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="fun-activities-section">
+  <div class="content">
+    <h2>FUN AND ACTIVITIES</h2>
+    <p>Enjoy a variety of exciting fun activities designed for everyone!</p>
+  </div>
+</section>
+
+        <footer style="background-color: #222; color: #fff; padding: 40px 20px;">
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; max-width: 1200px; margin: 0 auto;">
+    
+    <div style="flex: 1; min-width: 250px; padding: 10px;">
+      <h3>CONTACT US</h3>
+      <p>Wizardz Pub, Lounge & Restaurant</p>
+      <p>Email: info@wizardz.com</p>
+      <p>Phone: +254 726691218</p>
+      <p>Location: Nairobi, Kenya</p>
+    </div>
+
+    <div style="flex: 1; min-width: 250px; padding: 10px; text-align: center;">
+      <h3>QUICK LICKS</h3>
+      <ul style="list-style: none; display: flex; justify-content: center; gap: 20px; padding: 0; margin: 0;">
+        <li><a href="https://facebook.com/yourpage" target="_blank" class="social-icon" title="Facebook"><i class="fab fa-facebook-f" style="color: white; font-size: 20px;"></i></a></li>
+        <li><a href="https://instagram.com/yourpage" target="_blank" class="social-icon" title="Instagram"><i class="fab fa-instagram" style="color: white; font-size: 20px;"></i></a></li>
+        <li><a href="https://wa.me/yourwhatsapplink" target="_blank" class="social-icon" title="WhatsApp"><i class="fab fa-whatsapp" style="color: white; font-size: 20px;"></i></a></li>
+        <li><a href="https://youtube.com/yourchannel" target="_blank" class="social-icon" title="YouTube"><i class="fab fa-youtube" style="color: white; font-size: 20px;"></i></a></li>
+      </ul>
+    </div>
+
+
+    <div style="flex: 1; min-width: 250px; padding: 10px; text-align: right;">
+      <h3>Subscribe to Our Newsletter</h3>
+      <form>
+        <input type="email" placeholder="Enter your email" required
+               style="padding: 8px; width: 80%; border: none; border-radius: 4px; margin-bottom: 10px;">
+        <br>
+        <button type="submit"
+                style="padding: 8px 20px; background-color: maroon; color: #fff; border: none; border-radius: 4px;">
+          Subscribe
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div style="text-align: right; max-width: 1200px; margin: 20px auto 0; font-size: 14px;">
+    &copy; 2025 Wizardz Pub, Lounge & Restaurant. All Rights Reserved.Website developed By: Lizah Tech 
+  </div>
+</footer>
+
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const slides = document.querySelectorAll('.slideshow-content img');
+    if (slides.length === 0) return; 
+
+    let currentSlide = 0;
+
+    function showSlide(index) {
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+      });
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % slides.length;
+      showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      showSlide(currentSlide);
+    }
+    window.nextSlide = nextSlide;
+    window.prevSlide = prevSlide;
+    showSlide(currentSlide);
+    setInterval(nextSlide, 5000); 
+  });
+  const slides = document.querySelectorAll('.slide');
+    const leftArrow = document.querySelector('.arrow.left');
+    const rightArrow = document.querySelector('.arrow.right');
+    let current = 0;
+
+    function showSlide(index) {
+      slides.forEach(slide => slide.classList.remove('active'));
+      slides[index].classList.add('active');
+    }
+
+    leftArrow.addEventListener('click', () => {
+      current = (current === 0) ? slides.length - 1 : current - 1;
+      showSlide(current);
+    });
+
+    rightArrow.addEventListener('click', () => {
+      current = (current + 1) % slides.length;
+      showSlide(current);
+    });
+</script>
+
+
+ </body>
+</html> 
